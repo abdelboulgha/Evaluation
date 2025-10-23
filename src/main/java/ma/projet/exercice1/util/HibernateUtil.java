@@ -12,8 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+
 @Configuration
-@ComponentScan(basePackages = {"ma.projet.exercice1"})
+@ComponentScan(basePackages = {"ma.projet.exercice1.service", "ma.projet.exercice1.dao"})
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class HibernateUtil {
@@ -56,8 +57,7 @@ public class HibernateUtil {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("exercice1.entities", "exercice2.entities", "exercice3.entities");
-
+        sessionFactory.setPackagesToScan("ma.projet.exercice1.classes", "ma.projet.exercice2.classes");
         Properties hibernateProperties = new Properties();
         hibernateProperties.put("hibernate.dialect", hibernateDialect);
         hibernateProperties.put("hibernate.hbm2ddl.auto", hibernateDdlAuto);
