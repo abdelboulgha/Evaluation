@@ -69,7 +69,7 @@ public class HommeService implements IHommeDao {
             from Mariage m
             join m.femme f
             where m.homme.id = :hommeId
-            and m.dateFin = null
+            and m.dateFin IS NULL
             order by m.dateDebut
         """;
         return sessionFactory.getCurrentSession()
@@ -79,13 +79,13 @@ public class HommeService implements IHommeDao {
     }
 
     @Override
-    public List<Object[]>findMariagesEchoues (int hommeId) {
+    public List<Object[]> findMariagesEchoues(int hommeId) {
         String hql = """
             select f.nom, f.prenom, m.dateDebut, m.dateFin, m.nbrEnfant
             from Mariage m
             join m.femme f
             where m.homme.id = :hommeId
-            and m.dateFin != null 
+            and m.dateFin IS NOT NULL 
             order by m.dateDebut
         """;
         return sessionFactory.getCurrentSession()
