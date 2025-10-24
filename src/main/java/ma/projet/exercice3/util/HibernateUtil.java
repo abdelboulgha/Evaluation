@@ -57,12 +57,15 @@ public class HibernateUtil {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("ma.projet.exercice1.classes", "ma.projet.exercice2.classes" , "ma.projet.exercice3.beans");
+        sessionFactory.setPackagesToScan("ma.projet.exercice1.classes", "ma.projet.exercice2.classes","ma.projet.exercice3.beans");
         Properties hibernateProperties = new Properties();
         hibernateProperties.put("hibernate.dialect", hibernateDialect);
         hibernateProperties.put("hibernate.hbm2ddl.auto", hibernateDdlAuto);
         hibernateProperties.put("hibernate.show_sql", showSql);
         hibernateProperties.put("hibernate.format_sql", formatSql);
+        hibernateProperties.put("hibernate.connection.pool_size", "10");
+        hibernateProperties.put("hibernate.cache.use_second_level_cache", "false");
+        hibernateProperties.put("hibernate.current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
 
         sessionFactory.setHibernateProperties(hibernateProperties);
         return sessionFactory;
