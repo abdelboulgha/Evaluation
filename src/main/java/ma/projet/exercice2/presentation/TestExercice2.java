@@ -18,87 +18,85 @@ import java.util.List;
 public class TestExercice2 {
 
     public static void main(String[] args) throws Exception {
-        // Initialisation du contexte Spring
         ApplicationContext springContext = new AnnotationConfigApplicationContext(HibernateUtil.class);
 
-        // Récupération des services via Spring
-        IEmployeDao employeDao = springContext.getBean("employeServcie", IEmployeDao.class);
+        IEmployeDao employeDao = springContext.getBean("employeService", IEmployeDao.class);
         IProjetDao projetDao = springContext.getBean("projetService", IProjetDao.class);
         ITacheDao tacheDao = springContext.getBean("tacheService", ITacheDao.class);
         IDao<EmployeTache> employeTacheDao = springContext.getBean("employeTacheService", IDao.class);
 
-        // Création des employés
         createEmployees(employeDao);
-
-        // Création des projets
         createProjects(projetDao, employeDao);
-
-        // Création des tâches
         createTasks(tacheDao, projetDao);
-
-        // Création des assignations employé-tâche
         createEmployeeTaskAssignments(employeTacheDao, employeDao, tacheDao);
-
-        // Exécution des requêtes de test
         executeTestQueries(employeDao, projetDao, tacheDao);
     }
 
     private static void createEmployees(IEmployeDao employeDao) {
-        // Premier employé
-        Employe premierEmploye = new Employe();
-        premierEmploye.setNom("Elhamri");
-        premierEmploye.setPrenom("Ahmed");
-        premierEmploye.setTelephone("0600000000");
-        employeDao.create(premierEmploye);
+        Employe employe1 = new Employe();
+        employe1.setNom("Alami");
+        employe1.setPrenom("Fatima");
+        employe1.setTelephone("0612345678");
+        employeDao.create(employe1);
 
-        // Deuxième employé
-        Employe deuxiemeEmploye = new Employe();
-        deuxiemeEmploye.setNom("Bennani");
-        deuxiemeEmploye.setPrenom("Youssef");
-        deuxiemeEmploye.setTelephone("0600000000");
-        employeDao.create(deuxiemeEmploye);
+        Employe employe2 = new Employe();
+        employe2.setNom("Benjelloun");
+        employe2.setPrenom("Omar");
+        employe2.setTelephone("0623456789");
+        employeDao.create(employe2);
+
+        Employe employe3 = new Employe();
+        employe3.setNom("Chraibi");
+        employe3.setPrenom("Aicha");
+        employe3.setTelephone("0634567890");
+        employeDao.create(employe3);
     }
 
     private static void createProjects(IProjetDao projetDao, IEmployeDao employeDao) {
-        Projet projetRH = new Projet();
-        projetRH.setNom("Système RH");
-        projetRH.setDateDebut(new Date());
-        projetRH.setDateFin(new Date());
+        Projet projet1 = new Projet();
+        projet1.setNom("Application E-commerce");
+        projet1.setDateDebut(new Date());
+        projet1.setDateFin(new Date());
+        projet1.setChef(employeDao.findById(1));
+        projetDao.create(projet1);
 
-        // Récupération du premier employé pour le chef de projet
-        Employe chefProjet = employeDao.findById(1);
-        projetRH.setChef(chefProjet);
-
-        projetDao.create(projetRH);
+        Projet projet2 = new Projet();
+        projet2.setNom("Système de Gestion");
+        projet2.setDateDebut(new Date());
+        projet2.setDateFin(new Date());
+        projet2.setChef(employeDao.findById(2));
+        projetDao.create(projet2);
     }
 
     private static void createTasks(ITacheDao tacheDao, IProjetDao projetDao) {
-        // Première tâche
-        Tache tacheBackend = new Tache();
-        tacheBackend.setNom("Backend API");
-        tacheBackend.setNom("Développer l'API du module RH");
-        tacheBackend.setDateDebut(new Date());
-        tacheBackend.setDateFin(new Date());
-        tacheBackend.setPrix(200);
+        Tache tache1 = new Tache();
+        tache1.setNom("Développement Backend");
+        tache1.setDateDebut(new Date());
+        tache1.setDateFin(new Date());
+        tache1.setPrix(1500);
+        tache1.setProjet(projetDao.findById(1));
+        tacheDao.create(tache1);
 
-        Projet projetAssocie = projetDao.findById(1);
-        tacheBackend.setProjet(projetAssocie);
-        tacheDao.create(tacheBackend);
+        Tache tache2 = new Tache();
+        tache2.setNom("Interface Utilisateur");
+        tache2.setDateDebut(new Date());
+        tache2.setDateFin(new Date());
+        tache2.setPrix(800);
+        tache2.setProjet(projetDao.findById(1));
+        tacheDao.create(tache2);
 
-        // Deuxième tâche
-        Tache tacheFrontend = new Tache();
-        tacheFrontend.setNom("Frontend React");
-        tacheFrontend.setDateDebut(new Date());
-        tacheFrontend.setDateFin(new Date());
-        tacheFrontend.setPrix(200);
-        tacheFrontend.setProjet(projetAssocie);
-        tacheDao.create(tacheFrontend);
+        Tache tache3 = new Tache();
+        tache3.setNom("Tests et Déploiement");
+        tache3.setDateDebut(new Date());
+        tache3.setDateFin(new Date());
+        tache3.setPrix(1200);
+        tache3.setProjet(projetDao.findById(2));
+        tacheDao.create(tache3);
     }
 
     private static void createEmployeeTaskAssignments(IDao<EmployeTache> employeTacheDao,
                                                       IEmployeDao employeDao,
                                                       ITacheDao tacheDao) {
-        // Première assignation
         EmployeTache assignation1 = new EmployeTache();
         assignation1.setDateDebutReelle(new Date());
         assignation1.setDateFinReelle(new Date());
@@ -106,35 +104,21 @@ public class TestExercice2 {
         assignation1.setTache(tacheDao.findById(1));
         employeTacheDao.create(assignation1);
 
-        // Deuxième assignation
         EmployeTache assignation2 = new EmployeTache();
         assignation2.setDateDebutReelle(new Date());
         assignation2.setDateFinReelle(new Date());
-        assignation2.setEmploye(employeDao.findById(2));
+        assignation2.setEmploye(employeDao.findById(3));
         assignation2.setTache(tacheDao.findById(2));
         employeTacheDao.create(assignation2);
     }
 
     private static void executeTestQueries(IEmployeDao employeDao, IProjetDao projetDao, ITacheDao tacheDao) {
-        // Test 1: Tâches réalisées par un employé
         testTachesRealiseesParEmploye(employeDao);
-
-        // Test 2: Projets gérés par un employé
         testProjetsGeresParEmploye(employeDao);
-
-        // Test 3: Tâches planifiées par projet
         testTachesPlanifieesParProjet(projetDao);
-
-        // Test 4: Tâches réalisées par projet
         testTachesRealiseesParProjet(projetDao);
-
-        // Test 5: Tâches avec prix supérieur à 1000
         testTachesPrixSuperieur1000(tacheDao);
-
-        // Test 6: Tâches entre deux dates
         testTachesEntreDates(tacheDao);
-
-        // Test 7: Affichage détaillé
         affichageDetailleProjet(projetDao);
     }
 
@@ -143,8 +127,12 @@ public class TestExercice2 {
         List<Tache> listeTaches = employeDao.findTachesRealiseesByEmploye(employeRecherche.getId());
 
         System.out.println("==== Taches Realisees par " + employeRecherche.getNom() + " ====");
-        for (Tache tache : listeTaches) {
-            System.out.println(tache.getNom());
+        if (listeTaches.isEmpty()) {
+            System.out.println("Aucune tâche trouvée");
+        } else {
+            for (Tache tache : listeTaches) {
+                System.out.println(tache.getNom());
+            }
         }
     }
 
@@ -153,8 +141,12 @@ public class TestExercice2 {
         List<Projet> listeProjets = employeDao.findProjetsGeresByEmploye(employeRecherche.getId());
 
         System.out.println("==== Projets Geres par " + employeRecherche.getNom() + " ====");
-        for (Projet projet : listeProjets) {
-            System.out.println(projet.getNom());
+        if (listeProjets.isEmpty()) {
+            System.out.println("Aucun projet trouvé");
+        } else {
+            for (Projet projet : listeProjets) {
+                System.out.println(projet.getNom());
+            }
         }
     }
 
@@ -163,8 +155,12 @@ public class TestExercice2 {
         System.out.println("==== Taches Planifiees par " + projetRecherche.getNom() + " ====");
 
         List<Tache> listeTaches = projetDao.findTachesPlanifieesByProjet(projetRecherche.getId());
-        for (Tache tache : listeTaches) {
-            System.out.println(tache.getNom());
+        if (listeTaches.isEmpty()) {
+            System.out.println("Aucune tâche planifiée trouvée");
+        } else {
+            for (Tache tache : listeTaches) {
+                System.out.println(tache.getNom());
+            }
         }
     }
 
@@ -173,27 +169,39 @@ public class TestExercice2 {
         System.out.println("==== Taches Realisees par " + projetRecherche.getNom() + " ====");
 
         List<Tache> listeTaches = projetDao.findTachesRealiseesByProjet(projetRecherche.getId());
-        for (Tache tache : listeTaches) {
-            System.out.println(tache.getNom());
+        if (listeTaches.isEmpty()) {
+            System.out.println("Aucune tâche réalisée trouvée");
+        } else {
+            for (Tache tache : listeTaches) {
+                System.out.println(tache.getNom());
+            }
         }
     }
 
     private static void testTachesPrixSuperieur1000(ITacheDao tacheDao) {
         System.out.println("==== Prix Des Taches Superieur a 1000 ====");
         List<Tache> listeTaches = tacheDao.findTachesPrixSup1000();
-        for (Tache tache : listeTaches) {
-            System.out.println(tache.getNom());
+        if (listeTaches.isEmpty()) {
+            System.out.println("Aucune tâche avec prix > 1000 trouvée");
+        } else {
+            for (Tache tache : listeTaches) {
+                System.out.println(tache.getNom());
+            }
         }
     }
 
     private static void testTachesEntreDates(ITacheDao tacheDao) {
         System.out.println("==== Taches Entre Deux Dates ====");
-        Date dateDebut = new Date(2025, 10, 1, 0, 0, 0);
-        Date dateFin = new Date(2025, 10, 30, 0, 0, 0);
+        Date dateDebut = new Date(2024, 1, 1, 0, 0, 0);
+        Date dateFin = new Date(2024, 12, 31, 0, 0, 0);
 
         List<Tache> listeTaches = tacheDao.findTachesRealiseesEntreDates(dateDebut, dateFin);
-        for (Tache tache : listeTaches) {
-            System.out.println(tache.getNom());
+        if (listeTaches.isEmpty()) {
+            System.out.println("Aucune tâche trouvée dans cette période");
+        } else {
+            for (Tache tache : listeTaches) {
+                System.out.println(tache.getNom());
+            }
         }
     }
 
@@ -209,9 +217,13 @@ public class TestExercice2 {
         System.out.println("Num \t Nom \t Date Debut Reelle \t Date Fin Reelle");
 
         List<Tache> tachesProjet = projetDao.findTachesRealiseesByProjet(projetDetaille.getId());
-        for (Tache tache : tachesProjet) {
-            System.out.println(tache.getId() + " \t " + tache.getNom() +
-                    " \t " + tache.getDateDebut() + " \t " + tache.getDateFin());
+        if (tachesProjet.isEmpty()) {
+            System.out.println("Aucune tâche trouvée pour ce projet");
+        } else {
+            for (Tache tache : tachesProjet) {
+                System.out.println(tache.getId() + " \t " + tache.getNom() +
+                        " \t " + tache.getDateDebut() + " \t " + tache.getDateFin());
+            }
         }
     }
 }

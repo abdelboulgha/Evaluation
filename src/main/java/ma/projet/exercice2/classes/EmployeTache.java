@@ -21,6 +21,14 @@ public class EmployeTache {
     private Tache tache;
 
     public EmployeTache() {
+
+    }
+
+    public EmployeTache(Employe employe, Tache tache, Date dateDebutReelle) {
+        this();
+        this.employe = employe;
+        this.tache = tache;
+        this.dateDebutReelle = dateDebutReelle;
     }
 
     public int getId() {
@@ -47,6 +55,9 @@ public class EmployeTache {
         this.dateFinReelle = dateFinReelle;
     }
 
+
+
+
     public Employe getEmploye() {
         return employe;
     }
@@ -61,5 +72,36 @@ public class EmployeTache {
 
     public void setTache(Tache tache) {
         this.tache = tache;
+    }
+
+
+
+    public long getDureeEnJours() {
+        if (dateDebutReelle != null && dateFinReelle != null) {
+            return (dateFinReelle.getTime() - dateDebutReelle.getTime()) / (1000 * 60 * 60 * 24);
+        }
+        return 0;
+    }
+
+    public boolean estValide() {
+        return employe != null && tache != null && dateDebutReelle != null;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeTache{" +
+                "id=" + id +
+
+                ", dateDebutReelle=" + dateDebutReelle +
+                ", dateFinReelle=" + dateFinReelle +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        EmployeTache that = (EmployeTache) obj;
+        return id == that.id;
     }
 }

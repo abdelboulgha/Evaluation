@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service("employeServcie")
+@Service("employeService")
 @Transactional
 public class EmployeService implements IEmployeDao {
 
