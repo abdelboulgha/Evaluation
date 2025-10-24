@@ -18,17 +18,74 @@ public class LigneCommande {
     @JoinColumn(name = "commande_id")
     private Commande commande;
 
-    public LigneCommande() {}
+    // Constructeur par défaut
+    public LigneCommande() {
+    }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    // Constructeur avec paramètres
+    public LigneCommande(int quantite, Produit produit, Commande commande) {
+        this.quantite = quantite;
+        this.produit = produit;
+        this.commande = commande;
+    }
 
-    public int getQuantite() { return quantite; }
-    public void setQuantite(int quantite) { this.quantite = quantite; }
+    // Getters et Setters
+    public int getId() {
+        return id;
+    }
 
-    public Produit getProduit() { return produit; }
-    public void setProduit(Produit produit) { this.produit = produit; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public Commande getCommande() { return commande; }
-    public void setCommande(Commande commande) { this.commande = commande; }
+    public int getQuantite() {
+        return quantite;
+    }
+
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
+    }
+
+
+
+
+
+    public Produit getProduit() {
+        return produit;
+    }
+
+    public void setProduit(Produit produit) {
+        this.produit = produit;
+    }
+
+    public Commande getCommande() {
+        return commande;
+    }
+
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
+
+
+
+    public boolean estValide() {
+        return quantite > 0 && produit != null && commande != null;
+    }
+
+    @Override
+    public String toString() {
+        return "LigneCommande{" +
+                "id=" + id +
+                ", quantite=" + quantite +
+                ", produit=" + (produit != null ? produit.getReference() : "null") +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        LigneCommande that = (LigneCommande) obj;
+        return id == that.id;
+    }
 }

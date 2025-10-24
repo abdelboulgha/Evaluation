@@ -2,6 +2,7 @@ package ma.projet.exercice1.classes;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NamedQuery(
@@ -23,8 +24,21 @@ public class Produit {
     @OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
     private List<LigneCommande> lignes;
 
-    public Produit() {}
 
+
+
+    public Produit() {
+
+    }
+
+
+    public Produit(String reference, double prix) {
+        this();
+        this.reference = reference;
+        this.prix = prix;
+    }
+
+    // Getters et Setters
     public int getId() {
         return id;
     }
@@ -37,21 +51,22 @@ public class Produit {
         return reference;
     }
 
-    public void setReference(String name) {
-        this.reference = name;
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public double getPrix() {
         return prix;
     }
 
-    public void setPrix(double price) {
-        this.prix = price;
+    public void setPrix(double prix) {
+        this.prix = prix;
     }
 
     public Categorie getCategorie() {
         return categorie;
     }
+
     public void setCategorie(Categorie categorie) {
         this.categorie = categorie;
     }
@@ -62,5 +77,38 @@ public class Produit {
 
     public void setLignes(List<LigneCommande> lignes) {
         this.lignes = lignes;
+    }
+
+    // Méthodes utilitaires
+    public void ajouterLigneCommande(LigneCommande ligne) {
+        if (lignes == null) {
+            lignes = new ArrayList<>();
+        }
+        lignes.add(ligne);
+        ligne.setProduit(this);
+    }
+
+    public void retirerLigneCommande(LigneCommande ligne) {
+        if (lignes != null) {
+            lignes.remove(ligne);
+            ligne.setProduit(null);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Produit{" +
+                "id=" + id +
+                ", reference='" + reference + '\'' +
+                ", prix=" + prix +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Produit produit = (Produit) obj;
+        return id == produit.id;
     }
 }
